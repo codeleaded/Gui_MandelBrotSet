@@ -230,7 +230,7 @@ void CreateFractalThreads(const Vic2* pix_tl, const Vic2* pix_br, const Vdc2* fr
 	}
 	
 	for (size_t i = 0; i < nMaxThreads; i++){
-		Thread_Join(&Args[i].hThread,NULL);
+		Thread_Join(&Args[i].hThread);
 	}
 }
 
@@ -289,7 +289,7 @@ void DeleteThreadPool(){
 		if(Threads[i].hThread.h){
 			Threads[i].bAlive = 0;
 			Threads[i].bLocked = 0;
-			Thread_Join(&Threads[i].hThread,NULL);
+			Thread_Join(&Threads[i].hThread);
 			Threads[i].hThread.h = 0UL;
 		}
 	}
