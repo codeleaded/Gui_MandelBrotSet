@@ -465,7 +465,7 @@ void Update(AlxWindow* w){
 	//		float n = (float)i;
 	//		float a = 0.1f;
 	//
-	//		Draw(x,y,Pixel_toRGBA(
+	//		Point_Render(WINDOW_STD_ARGS,(Vec2){ x,y },Pixel_toRGBA(
 	//			0.5f * sinf(a * n) + 0.5f,
 	//			0.5f * sinf(a * n + 2.094f) + 0.5f,
 	//			0.5f * sinf(a * n + 4.188f) + 0.5f,
