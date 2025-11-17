@@ -41,7 +41,6 @@ void CreateFractalBasic(const Vic2* pix_tl, const Vic2* pix_br, const Vdc2* frac
 		}
 	}
 }
-
 void CreateFractalPreCalculate(const Vic2* pix_tl, const Vic2* pix_br, const Vdc2* frac_tl, const Vdc2* frac_br, const int iterations){
 	double x_scale = (frac_br->x - frac_tl->x) / ((double)pix_br->x - (double)pix_tl->x);
 	double y_scale = (frac_br->y - frac_tl->y) / ((double)pix_br->y - (double)pix_tl->y);
@@ -79,7 +78,6 @@ void CreateFractalPreCalculate(const Vic2* pix_tl, const Vic2* pix_br, const Vdc
 		y_offset += row_size;
 	}
 }
-
 void CreateFractalNoComplex2(const Vic2* pix_tl, const Vic2* pix_br, const Vdc2* frac_tl, const Vdc2* frac_br, const int iterations){
 	double x_scale = (frac_br->x - frac_tl->x) / ((double)pix_br->x - (double)pix_tl->x);
 	double y_scale = (frac_br->y - frac_tl->y) / ((double)pix_br->y - (double)pix_tl->y);
@@ -119,7 +117,6 @@ void CreateFractalNoComplex2(const Vic2* pix_tl, const Vic2* pix_br, const Vdc2*
 		y_offset += row_size;
 	}
 }
-
 void CreateFractalIntrinsics(const Vic2* pix_tl, const Vic2* pix_br, const Vdc2* frac_tl, const Vdc2* frac_br, const int iterations){
 	double x_scale = (frac_br->x - frac_tl->x) / ((double)pix_br->x - (double)pix_tl->x);
 	double y_scale = (frac_br->y - frac_tl->y) / ((double)pix_br->y - (double)pix_tl->y);
@@ -409,8 +406,8 @@ void DeleteThreadPool(){
 #endif
 
 void Setup(AlxWindow* w){
-	tv = TransformedViewD_New((Vdc2){ 1.0f,1.0f });
-	tv.Scale = (Vdc2){ 1000.0f,1000.0f };
+	tv = TransformedViewD_New((Vdc2){ GetWidth(),GetHeight() });
+	
 	pFractal = (int*)malloc((size_t)GetWidth() * (size_t)GetHeight() * sizeof(int));
 	memset(pFractal,0,(size_t)GetWidth() * (size_t)GetHeight() * sizeof(int));
 
@@ -419,9 +416,8 @@ void Setup(AlxWindow* w){
 
 	ResizeAlxFont(16,16);
 }
-
 void Update(AlxWindow* w){
-	tv.ZoomSpeed = (float)w->ElapsedTime;
+	tv.ZoomSpeed = (float)w->ElapsedTime * 5.0f;
 	TransformedViewD_HandlePanZoom(&tv,window.Strokes,(Vdc2){ GetMouse().x,GetMouse().y });
 	
 	Vic2 pix_tl = { 0,0 };
@@ -519,13 +515,12 @@ void Update(AlxWindow* w){
 	case 4: RenderCStr("5) Threads Method",					0,0,WHITE); break;
 	case 5: RenderCStr("6) ThreadPool Method",				0,0,WHITE); break;
 	}
-	String str = String_Format("| w->ElapsedTime Taken: %fs - Iterations: %d |",elapsedTime,nIterations);
+	String str = String_Format("| ES Taken: %fs - Iterations: %d |",elapsedTime,nIterations);
 	char* cstr = String_CStr(&str);
 	RenderCStr(cstr,0,30,WHITE);
 	free(cstr);
 	String_Free(&str);
 }
-
 void Delete(AlxWindow* w){
     //for (int i = 0; i < nMaxThreads; i++){
 	//	workers[i].alive = 0;
@@ -538,9 +533,13 @@ void Delete(AlxWindow* w){
 	DeleteThreadPool();
 	free(pFractal);
 }
+void Resize(AlxWindow* w){
+    if(pFractal) free(pFractal);
+	pFractal = (int*)malloc((size_t)GetWidth() * (size_t)GetHeight() * sizeof(int));
+}
 
 int main(){
-    if(Create("Game Test",1280,720,1,1,Setup,Update,Delete))
+    if(CreateX("Game Test",1280,720,1,1,Setup,Update,Delete,Resize))
         Start();
     return 0;
 }
