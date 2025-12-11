@@ -184,8 +184,8 @@ void CreateFractalIntrinsics(const Vic2* pix_tl, const Vic2* pix_br, const Vdc2*
 
 typedef struct Element{
 	Thread hThread;
-	Bool bLocked;
-	Bool bAlive;
+	char bLocked;
+	char bAlive;
 	Vic2 a;
 	Vic2 b;
 	Vdc2 c;
@@ -268,7 +268,7 @@ void CreateFractalThreadPool(const Vic2* pix_tl, const Vic2* pix_br, const Vdc2*
 		Threads[i].bLocked = 0;
 	}
 
-	Bool Running = 1;
+	char Running = 1;
 	while(Running){
 		for(size_t i = 0; i < nMaxThreads; i++){
 			if(!Threads[i].bLocked){
@@ -296,8 +296,8 @@ void DeleteThreadPool(){
 
 typedef struct Element{
 	HANDLE hThread;
-	Bool bLocked;
-	Bool bAlive;
+	char bLocked;
+	char bAlive;
 	Vic2 a;
 	Vic2 b;
 	Vdc2 c;
@@ -377,7 +377,7 @@ void CreateFractalThreadPool(const Vic2* pix_tl, const Vic2* pix_br, const Vdc2*
 		Threads[i].bLocked = 0;
 	}
 
-	Bool Running = 1;
+	char Running = 1;
 	while(Running){
 		for(size_t i = 0; i < nMaxThreads; i++){
 			if(!Threads[i].bLocked){
