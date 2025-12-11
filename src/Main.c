@@ -175,8 +175,8 @@ void CreateFractalIntrinsics(const Vic2* pix_tl, const Vic2* pix_br, const Vdc2*
 
 typedef struct Element{
 	Thread hThread;
-	Bool bLocked;
-	Bool bAlive;
+	char bLocked;
+	char bAlive;
 	Vic2 a;
 	Vic2 b;
 	Vdc2 c;
